@@ -48,12 +48,15 @@ require("lazy").setup({
   require("plugins.database"),
   require("plugins.misc"),
   -- require("plugins.harpoon"),
-  -- require 'plugins.avante',
+  -- require("plugins.avante"),
   -- require 'plugins.chatgpt',
   require("plugins.aerial"),
   -- require("plugins.vim-tmux-navigator"),
   require("plugins.toggle-vterm"),
   require("plugins.copilot"),
+  require("plugins.render-markdown"),
+  require("plugins.markdown-preview"),
+  require("plugins.ranger"),
 }, {
   ui = {
     -- If you have a Nerd Font, set icons to an empty table which will use the

@@ -26,8 +26,8 @@ return {
 				})
 			end,
 			keys = {
-				{ "<leader>ff", ":Neotree toggle float<CR>", silent = true, desc = "Float File Explorer" },
-				{ "<leader>e", ":Neotree toggle position=left<CR>", silent = true, desc = "Left File Explorer" },
+				{ "<leader>e", ":Neotree toggle float<CR>", silent = true, desc = "Float File Explorer" },
+				{ "<leader>f", ":Neotree toggle position=left<CR>", silent = true, desc = "Left File Explorer" },
 				{
 					"<leader>ngs",
 					":Neotree float git_status<CR>",
@@ -46,7 +46,22 @@ return {
 
 		require("neo-tree").setup({
 			event_handlers = {
-
+				{
+					event = "file_opened",
+					handler = function()
+						-- Cerrar neo-tree automáticamente al abrir un archivo
+						require("neo-tree").close_all()
+						-- Cerrar cualquier buffer sin nombre
+						for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+							if vim.api.nvim_buf_is_valid(buf) then
+								local name = vim.api.nvim_buf_get_name(buf)
+								if name == "" then
+									vim.api.nvim_buf_delete(buf, { force = true })
+								end
+							end
+						end
+					end,
+				},
 				{
 					event = "file_open_requested",
 					handler = function()

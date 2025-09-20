@@ -14,6 +14,9 @@ vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 -- vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 -- vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- Formatting json
+vim.keymap.set("n", "<leader>jq", "%!jq .", opts)
+
 -- clear highlights
 vim.keymap.set("n", "<Esc>", ":noh<CR>", opts)
 
@@ -92,6 +95,8 @@ vim.keymap.set("i", "kj", "<ESC>", opts)
 -- Stay in indent mode
 vim.keymap.set("v", "<", "<gv", opts)
 vim.keymap.set("v", ">", ">gv", opts)
+vim.keymap.set("n", "<leader>i", "gg=G<C-o>", { desc = "Re-indent entire file" })
+vim.keymap.set("v", "<leader>i", "=", { desc = "Re-indent selection" })
 
 -- Move text up and down
 vim.keymap.set("v", "<A-j>", ":m .+1<CR>==", opts)
