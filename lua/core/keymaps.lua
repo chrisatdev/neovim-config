@@ -15,42 +15,42 @@ vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 -- vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Formatting json
-vim.keymap.set("n", "<leader>jq", "%!jq .", opts)
+vim.keymap.set("n", "<leader>jq", "%!jq .<CR>", opts, { desc = "Formatting JSON" })
 
 -- clear highlights
-vim.keymap.set("n", "<Esc>", ":noh<CR>", opts)
+vim.keymap.set("n", "<Esc>", ":noh<CR>", opts, { desc = "Clear highlights" })
 
 -- save file
-vim.keymap.set("n", "<leader>w", "<cmd> w <CR>", opts)
+vim.keymap.set("n", "<leader>w", "<cmd> w <CR>", opts, { desc = "Save file" })
 
 -- save file without auto-formatting
-vim.keymap.set("n", "<leader>sn", "<cmd>noautocmd w <CR>", opts)
+vim.keymap.set("n", "<leader>sn", "<cmd>noautocmd w <CR>", opts, { desc = "Save file without auto-formatting" })
 
 -- quit file
-vim.keymap.set("n", "<leader>q", "<cmd> q! <CR>", opts)
+vim.keymap.set("n", "<leader>q", "<cmd> q! <CR>", opts, { desc = "Quit file" })
 
 -- delete single character without copying into register
-vim.keymap.set("n", "x", '"_x', opts)
+vim.keymap.set("n", "x", '"_x', opts, { desc = "Delete single character without copying into register" })
 
 -- Vertical scroll and center
-vim.keymap.set("n", "<C-d>", "<C-d>zz", opts)
-vim.keymap.set("n", "<C-u>", "<C-u>zz", opts)
+vim.keymap.set("n", "<C-d>", "<C-d>zz", opts, { desc = "Scroll down and center" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", opts, { desc = "Scroll up and center" })
 
 -- Find and center
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
 -- Resize with arrows
-vim.keymap.set("n", "<C-Up>", ":resize -2<CR>", opts)
-vim.keymap.set("n", "<C-Down>", ":resize +2<CR>", opts)
-vim.keymap.set("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+vim.keymap.set("n", "<C-Up>", ":resize -2<CR>", opts, { desc = "Resize window up" })
+vim.keymap.set("n", "<C-Down>", ":resize +2<CR>", opts, { desc = "Resize window down" })
+vim.keymap.set("n", "<C-Left>", ":vertical resize -2<CR>", opts, { desc = "Resize window left" })
+vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>", opts, { desc = "Resize window right" })
 
 -- Buffers
-vim.keymap.set("n", "<S-l>", ":bnext<CR>", opts)
-vim.keymap.set("n", "<S-h>", ":bprevious<CR>", opts)
-vim.keymap.set("n", "<leader>c", ":Bdelete!<CR>", opts)   -- close buffer
-vim.keymap.set("n", "<leader>b", "<cmd> enew <CR>", opts) -- new buffer
+vim.keymap.set("n", "<S-l>", ":bnext<CR>", opts, { desc = "Go to next buffer" })
+vim.keymap.set("n", "<S-h>", ":bprevious<CR>", opts, { desc = "Go to previous buffer" })
+vim.keymap.set("n", "<leader>c", ":Bdelete!<CR>", opts, { desc = "Close buffer" })
+vim.keymap.set("n", "<leader>b", "<cmd> enew <CR>", opts, { desc = "Open new buffer" })
 
 -- Increment/decrement numbers
 vim.keymap.set("n", "<leader>+", "<C-a>", opts) -- increment
@@ -74,19 +74,8 @@ vim.keymap.set("n", "<leader>tx", ":tabclose<CR>", opts) -- close current tab
 vim.keymap.set("n", "<leader>tn", ":tabn<CR>", opts)     --  go to next tab
 vim.keymap.set("n", "<leader>tp", ":tabp<CR>", opts)     --  go to previous tab
 
--- Terminal
--- Toggle horizontal terminal
--- vim.keymap.set("n", "<leader>th", function()
--- 	term_vim.toggle_terminal("horizontal")
--- end, opts)
--- Toggle vertical terminal
--- vim.keymap.set("n", "<leader>tv", function()
--- 	term_vim.toggle_terminal("vertical")
--- end, opts)
--- vim.keymap.set("t", "<C-x>", "<C-\\><C-n>", opts) -- Exit to Normal mode in the terminal
-
 -- Toggle line wrapping
-vim.keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", opts)
+vim.keymap.set("n", "<leader>lw", "<cmd>set wrap!<CR>", opts, { desc = "Toggle line wrapping" })
 
 -- Press jk fast to exit insert mode
 vim.keymap.set("i", "jk", "<ESC>", opts)

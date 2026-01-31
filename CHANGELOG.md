@@ -1,7 +1,7 @@
 # CHANGELOG
 
-## [Unreleased] - noviembre 2025
+## [Unreleased] - enero 2026
 ### Documentation
-- [docs] update documentation (3 files) by @Christian Benitez
+- [docs] update documentation (13 files) by @Christian Benitez
 ### Added
-- New changelog for noviembre 2025
+- New changelog for enero 2026
