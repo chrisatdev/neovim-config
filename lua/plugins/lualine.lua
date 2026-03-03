@@ -37,14 +37,18 @@ return {
 		}
 
 		-- Import color theme based on environment variable NVIM_THEME
-		local env_var_nvim_theme = os.getenv("NVIM_THEME") or "tokyonight"
+		local env_var_nvim_theme = os.getenv("NVIM_THEME") or "rosepine"
 
-		-- Define a table of themes
+		-- Define a table of lualine themes (using built-in themes or 'auto')
+		-- 'auto' automatically detects the colorscheme and adapts lualine
 		local themes = {
-			onedark = onedark_theme,
 			nord = "nord",
+			onedark = "onedark",
 			OceanicNext = "OceanicNext",
 			tokyonight = "tokyonight",
+			kanagawa = "auto",
+			rosepine = "rose-pine",
+			cyberdream = "auto",
 		}
 
 		local mode = {

@@ -1,19 +1,28 @@
 return {
 	"NickvanDyke/opencode.nvim",
 	dependencies = {
-		-- Recommended for `ask()` and `select()`.
-		-- Required for `snacks` provider.
 		---@module 'snacks' <- Loads `snacks.nvim` types for configuration intellisense.
-		{ "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
+		{ "folke/snacks.nvim", optional = true, opts = { input = {}, picker = {}, terminal = {} } },
 	},
 	config = function()
 		---@type opencode.Opts
-		vim.g.opencode_opts = {
-			-- Your configuration, if any — see `lua/opencode/config.lua`, or "goto definition" on the type or field.
-		}
+		vim.g.opencode_opts = {}
 
-		-- Required for `opts.events.reload`.
 		vim.o.autoread = true
+
+		vim.api.nvim_create_autocmd("BufAdd", {
+			callback = function(args)
+				local buf = args.buf
+				if not vim.api.nvim_buf_is_valid(buf) then
+					return
+				end
+				local name = vim.api.nvim_buf_get_name(buf)
+				local name_lower = name:lower()
+				if name_lower:find("opencode") and name_lower:find("port") then
+					vim.bo[buf].buflisted = false
+				end
+			end,
+		})
 
 		-- Opencode keymaps using <leader>o prefix to avoid conflicts
 		-- Main toggle: <leader>oo for easy open/close
