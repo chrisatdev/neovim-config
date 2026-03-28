@@ -19,7 +19,7 @@ return {
 			styles = {
 				bold = true,
 				italic = true,
-				transparency = false, -- Set to true for transparent background
+				transparency = true, -- Set to true for transparent background
 			},
 
 			groups = {
@@ -66,6 +66,14 @@ return {
 				-- Customize specific highlight groups
 				-- Comment = { fg = "foam" },
 				-- VertSplit = { fg = "muted", bg = "muted" },
+				TelescopeBorder = { fg = "surface", bg = "surface" },
+				TelescopeNormal = { bg = "surface" },
+				TelescopePromptBorder = { fg = "rose", bg = "surface" },
+				TelescopePromptNormal = { bg = "surface" },
+				TelescopeResultsBorder = { fg = "rose", bg = "surface" },
+				TelescopeResultsNormal = { bg = "surface" },
+				TelescopePreviewBorder = { fg = "rose", bg = "surface" },
+				TelescopePreviewNormal = { bg = "surface" },
 			},
 
 			before_highlight = function(group, highlight, palette)

@@ -1,9 +1,10 @@
 return {
 	"NickvanDyke/opencode.nvim",
-	dependencies = {
-		---@module 'snacks' <- Loads `snacks.nvim` types for configuration intellisense.
-		{ "folke/snacks.nvim", optional = true, opts = { input = {}, picker = {}, terminal = {} } },
-	},
+	-- dependencies = {
+	-- 	---@module 'snacks' <- Loads `snacks.nvim` types for configuration intellisense.
+	-- 	{ "folke/snacks.nvim", optional = true, opts = { input = {}, picker = {}, terminal = {} } },
+	-- },
+	dependencies = { "folke/snacks.nvim" },
 	config = function()
 		---@type opencode.Opts
 		vim.g.opencode_opts = {}
