@@ -1,106 +1,53 @@
-require("core.options") -- Load general options
-require("core.keymaps") -- Load general keymaps
-require("core.snippets") -- Custom code snippets
+-- =============================================================================
+-- init.lua — Neovim entry point
+-- Bootstrap lazy.nvim, set leader, load config & plugins
+-- =============================================================================
 
--- Install package manager
+-- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable", -- latest stable release
-		lazypath,
-	})
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local repo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", repo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Import color theme based on environment variable NVIM_THEME
-local default_color_scheme = "rosepine"
-local env_var_nvim_theme = os.getenv("NVIM_THEME") or default_color_scheme
+-- Leader MUST be set before plugins load
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
--- Define a table of theme modules
-local themes = {
-	nord = "plugins.themes.nord",
-	onedark = "plugins.themes.onedark",
-	OceanicNext = "plugins.themes.OceanicNext",
-	tokyonight = "plugins.themes.tokyonight",
-	kanagawa = "plugins.themes.kanagawa",
-	rosepine = "plugins.themes.rosepine",
-	cyberdream = "plugins.themes.cyberdream",
-}
+-- Core config (options, keymaps, autocommands)
+require("config.options")
+require("config.keymaps")
+require("config.autocmds")
 
--- Setup plugins
+-- Plugin setup
 require("lazy").setup({
-	require(themes[env_var_nvim_theme]),
-	require("plugins.blame"),
-	require("plugins.telescope"),
-	require("plugins.treesitter"),
-	require("plugins.lsp"),
-	require("plugins.autocompletion"),
-	require("plugins.none-ls"),
-	require("plugins.lualine"),
-	require("plugins.bufferline"),
-	require("plugins.neo-tree"),
-	require("plugins.alpha"),
-	require("plugins.indent-blankline"),
-	require("plugins.lazygit"),
-	require("plugins.comment"),
-	require("plugins.debug"),
-	require("plugins.gitsigns"),
-	require("plugins.database"),
-	require("plugins.misc"),
-	require("plugins.aerial"),
-	require("plugins.toggle-vterm"),
-	require("plugins.copilot"),
-	require("plugins.opencode"),
-	require("plugins.claudecode"),
-	require("plugins.render-markdown"),
-	require("plugins.ranger"),
-	require("plugins.live-preview"),
-	require("plugins.noice"),
-}, {
-	ui = {
-		-- If you have a Nerd Font, set icons to an empty table which will use the
-		-- default lazy.nvim defined Nerd Font icons otherwise define a unicode icons table
-		icons = vim.g.have_nerd_font and {} or {
-			cmd = "⌘",
-			config = "🛠",
-			event = "📅",
-			ft = "📂",
-			init = "⚙",
-			keys = "🗝",
-			plugin = "🔌",
-			runtime = "💻",
-			require = "🌙",
-			source = "📄",
-			start = "🚀",
-			task = "📌",
-			lazy = "💤 ",
-		},
-	},
+  spec = {
+    { import = "plugins" },
+  },
+  defaults = { lazy = true },
+  install = { colorscheme = { "kanagawa" } },
+  checker = { enabled = true, notify = false },
+  change_detection = { notify = false },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip", "tarPlugin", "tohtml", "tutor", "zipPlugin",
+      },
+    },
+  },
+  ui = {
+    border = "rounded",
+    title = "  lazy.nvim ",
+    title_pos = "center",
+  },
 })
-
--- Function to check if a file exists
-local function file_exists(file)
-	local f = io.open(file, "r")
-	if f then
-		f:close()
-		return true
-	else
-		return false
-	end
-end
-
--- Path to the session file
-local session_file = ".session.vim"
-
--- Check if the session file exists in the current directory
-if file_exists(session_file) then
-	-- Source the session file
-	vim.cmd("source " .. session_file)
-end
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
