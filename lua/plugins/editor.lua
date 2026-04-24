@@ -1,74 +1,125 @@
 -- =============================================================================
 -- editor.lua — File navigation & editing utilities
--- oil.nvim, telescope, toggleterm (with opencode), ts-autotag, illuminate, todo-comments
+-- neo-tree, telescope, toggleterm (with opencode), ts-autotag, illuminate, todo-comments
 -- =============================================================================
 
 return {
 
 	-- --------------------------------------------------------------------------
-	-- oil.nvim — edit the filesystem like a buffer
+	-- neo-tree.nvim — file tree explorer
 	-- --------------------------------------------------------------------------
 	{
-		"stevearc/oil.nvim",
-		lazy = false, -- load immediately; replaces netrw
-		dependencies = { "echasnovski/mini.icons" },
+		"nvim-neo-tree/neo-tree.nvim",
+		event = "VeryLazy",
+		branch = "v3.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			"echasnovski/mini.icons",
+		},
 		keys = {
-			{ "<leader>e", "<cmd>Oil<cr>", desc = "File explorer (Oil)" },
-			{ "-", "<cmd>Oil<cr>", desc = "Open parent directory" },
-			-- { "<leader>E", "<cmd>Oil --float<cr>", desc = "File explorer (float)" },
+			{ "<leader>e", "<cmd>Neotree toggle<cr>", desc = "File explorer (Neo-tree)" },
 		},
 		opts = {
-			default_file_explorer = true,
-			delete_to_trash = true,
-			skip_confirm_for_simple_edits = false,
-			columns = { "icon", "permissions", "size", "mtime" },
-			win_options = {
-				wrap = false,
-				signcolumn = "no",
-				cursorcolumn = false,
-				foldcolumn = "0",
-				spell = false,
-				list = false,
-				conceallevel = 3,
-				concealcursor = "nvic",
+			close_if_last_window = true,
+			popup_border_style = "rounded",
+			enable_git_status = true,
+			enable_diagnostics = true,
+			event_handlers = {
+				{
+					event = "file_opened",
+					handler = function()
+						require("neo-tree.command").execute({ action = "close" })
+					end,
+				},
 			},
-			keymaps = {
-				["g?"] = "actions.show_help",
-				["<CR>"] = "actions.select",
-				["<C-s>"] = { "actions.select", opts = { vertical = true } },
-				["<C-h>"] = { "actions.select", opts = { horizontal = true } },
-				["<C-t>"] = { "actions.select", opts = { tab = true } },
-				["<C-p>"] = "actions.preview",
-				["<Esc>"] = "actions.close",
-				["q"] = "actions.close",
-				["<C-r>"] = "actions.refresh",
-				["-"] = "actions.parent",
-				["_"] = "actions.open_cwd",
-				["`"] = "actions.cd",
-				["gs"] = "actions.change_sort",
-				["gx"] = "actions.open_external",
-				["g."] = "actions.toggle_hidden",
-				["g\\"] = "actions.toggle_trash",
+			default_component_configs = {
+				indent = {
+					indent_size = 2,
+					padding = 1,
+					with_markers = true,
+					indent_marker = "│",
+					last_indent_marker = "└",
+					with_expanders = true,
+					expander_collapsed = "",
+					expander_expanded = "",
+					expander_highlight = "NeoTreeExpander",
+				},
+				icon = {
+					folder_closed = "",
+					folder_open = "",
+					folder_empty = "󰜌",
+					default = "",
+				},
+				modified = {
+					symbol = "[+]",
+					highlight = "NeoTreeModified",
+				},
+				git_status = {
+					symbols = {
+						added = "",
+						modified = "",
+						deleted = "✖",
+						renamed = "󰁕",
+						untracked = "",
+						ignored = "",
+						unstaged = "󰄱",
+						staged = "",
+						conflict = "",
+					},
+				},
 			},
-			view_options = {
-				show_hidden = false,
-				natural_order = true,
-				sort = { { "type", "asc" }, { "name", "asc" } },
+			window = {
+				position = "left",
+				width = 30,
+				mapping_options = {
+					noremap = true,
+					nowait = true,
+				},
+				mappings = {
+					["<cr>"] = "open",
+					["l"] = "open",
+					["h"] = "close_node",
+					["v"] = "open_vsplit",
+					["s"] = "open_split",
+					["t"] = "open_tabnew",
+					["<esc>"] = "cancel",
+					["q"] = "close_window",
+					["r"] = "rename",
+					["d"] = "delete",
+					["n"] = "add",
+					["k"] = "add_directory",
+					["c"] = "copy_to_clipboard",
+					["x"] = "cut_to_clipboard",
+					["p"] = "paste_from_clipboard",
+					["R"] = "refresh",
+					["."] = "toggle_hidden",
+					["?"] = "show_help",
+				},
 			},
-			float = {
-				padding = 2,
-				max_width = 90,
-				border = "rounded",
-				win_options = { winblend = 0 },
-			},
-			preview = {
-				max_width = 0.9,
-				min_width = { 40, 0.4 },
-				max_height = 0.9,
-				min_height = { 5, 0.1 },
-				border = "rounded",
-				win_options = { winblend = 0 },
-				update_on_cursor_moved = true,
+			filesystem = {
+				filtered_items = {
+					visible = false,
+					hide_dotfiles = false,
+					hide_gitignored = false,
+					hide_by_name = {
+						".DS_Store",
+						"thumbs.db",
+						"node_modules",
+						"vendor",
+						"__pycache__",
+						".virtual_documents",
+						".git",
+						".python-version",
+						".venv",
+					},
+				},
+				follow_current_file = {
+					enabled = true,
+					leave_dirs_open = false,
+				},
+				use_libuv_file_watcher = true,
+				hijack_netrw_behavior = "open_default",
 			},
 		},
 	},
